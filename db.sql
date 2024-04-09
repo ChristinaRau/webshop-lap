@@ -16,7 +16,7 @@ create table customer (
 );
 
 create table `order` (
-    id int AUTO_INCREMENT, customer_id int not null, delivery_address_id int, payment_method varchar(50), primary key (id), foreign key (customer_id) references customer (id)
+    id int AUTO_INCREMENT, customer_id int not null, delivery_address_id int, payment_method varchar(50), date_ordered datetime, primary key (id), foreign key (customer_id) references customer (id), foreign key delivery_address_id references address (id)
 );
 
 create table order_product (

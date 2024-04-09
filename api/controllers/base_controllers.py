@@ -79,13 +79,15 @@ class GroupAPI(MethodView):
         print(request.json)
         # object in transient state
         new_item = self.model.from_dict(request.json)
+        new_id = None
         with Session(engine, expire_on_commit=False) as session:
             # object in pending state (look at session.new)
             session.add(new_item)
             # object in persistent state
             session.commit()
+            new_id = new_item.id
 
-        return jsonify(new_item.to_dict())
+        return jsonify({"id": new_id})
 
 
 def register_api(app: Flask, model, name: str):
@@ -102,5 +104,3 @@ register_api(app, Order, "order")
 register_api(app, ProductDetail, "product_detail")
 register_api(app, OrderProduct, "order_product")
 register_api(app, Address, "address")
-
-# stuff with relationships

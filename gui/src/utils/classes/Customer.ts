@@ -12,6 +12,8 @@ export class Address {
     postalCode: string;
     country?: string;
 
+    static path = "address";
+
     constructor(firstName: string, lastName: string, street: string, houseNumber: string, city: string, postalCode: string, country?: string, id?: number) {    
         this.firstName = firstName;
         this.lastName = lastName;
@@ -54,6 +56,40 @@ export class Address {
         return new Address("", "", "", "", "", "", "", -1);
     }
 
+    static async getList(): Promise<Address[]> {
+        const jsonResponse: Record<string, any> | Array<Record<string, any>> = await sendRequest({
+            method: "GET",
+            path: this.path
+        }).then((resp) => {
+            return resp.json();
+        }).then((resp) => {
+            return resp;
+        });
+
+        return jsonResponse.map((obj: Record<string, any>) => this.fromSnakeCaseObject(obj));
+    }
+
+    static async get(id: number): Promise<Address> {
+        const jsonResponse: Record<string, any> | Array<Record<string, any>> = await sendRequest({
+            id:  id,
+            method: "GET",
+            path: this.path
+        }).then((resp) => {
+            return resp.json();
+        }).then((resp) => {
+            return resp;
+        });
+
+        return this.fromSnakeCaseObject(jsonResponse);
+    }
+
+    create() {
+        return sendRequest({
+            method: "POST",
+            path: Address.path,
+            body: JSON.stringify(this.toSnakeCaseObject())
+        });
+    }
 }
 
 export class Customer {
@@ -61,6 +97,7 @@ export class Customer {
     emailAddress: string;
     telNumber?: string;
     billingAddress?: Address;
+    billingAddressId?: number;
 
     static path = "customer";
 
@@ -100,7 +137,7 @@ export class Customer {
             return new Customer(
                 snakeCaseObj.email_address,
                 snakeCaseObj.tel_number,
-                snakeCaseObj.billing_address,
+                billingAddress,
                 snakeCaseObj.id
             );
         return new Customer("", "", undefined, -1);

@@ -6,11 +6,17 @@ import { Address, Customer } from "./Customer.js";
 
 export class OrderProduct {
     id?: number;
+    productId: number;
+    orderId: number;
     product?: Product;
     order?: Order;
 
-    constructor(product: Product, order: Order, id?: number)
+    static path = "order_product";
+
+    constructor(productId: number, orderId: number, product?: Product, order?: Order, id?: number)
     {
+        this.productId = productId;
+        this.orderId = orderId;
         this.product = product;
         this.order = order;
         this.id = id;
@@ -40,6 +46,15 @@ export class OrderProduct {
             );
         return new OrderProduct(-1, -1, -1);
     }
+
+    create() {
+        return sendRequest({
+            method: "POST",
+            path: OrderProduct.path,
+            body: JSON.stringify(this.toSnakeCaseObject())
+        });
+    }
+
 
 }
 

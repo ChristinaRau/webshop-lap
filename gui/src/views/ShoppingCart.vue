@@ -46,11 +46,11 @@
 
                 <InputText
                     id="name"
-                    v-model="newCustomer.billingAddress.firstName"
+                    v-model="customer.billingAddress.firstName"
                     class="flex-auto"
                     autocomplete="off"
-                    :invalid="checkInputValid && newComputer.name.length == 0"/>
-                <small v-show="checkInputValid && newComputer.name.length == 0">
+                    :invalid="checkInputValid && customer.billingAddress.firstName"/>
+                <small v-show="checkInputValid && customer.billingAddress.firstName">
                     Feld darf nicht leer sein.
                 </small>
             </div>
@@ -63,11 +63,11 @@
 
                 <InputText
                     id="name"
-                    v-model="newCustomer.billingAddress.lastName"
+                    v-model="customer.billingAddress.lastName"
                     class="flex-auto"
                     autocomplete="off"
-                    :invalid="checkInputValid && newComputer.name.length == 0"/>
-                <small v-show="checkInputValid && newComputer.name.length == 0">
+                    :invalid="checkInputValid && customer.billingAddress.lastName"/>
+                <small v-show="checkInputValid && customer.billingAddress.lastName">
                     Feld darf nicht leer sein.
                 </small>
             </div>
@@ -80,11 +80,11 @@
 
                 <InputText
                     id="name"
-                    v-model="newCustomer.billingAddress.lastName"
+                    v-model="customer.billingAddress.street"
                     class="flex-auto"
                     autocomplete="off"
-                    :invalid="checkInputValid && newComputer.name.length == 0"/>
-                <small v-show="checkInputValid && newComputer.name.length == 0">
+                    :invalid="checkInputValid && customer.billingAddress.street"/>
+                <small v-show="checkInputValid && customer.billingAddress.street">
                     Feld darf nicht leer sein.
                 </small>
             </div>
@@ -97,11 +97,11 @@
 
                 <InputText
                     id="name"
-                    v-model="newCustomer.billingAddress.lastName"
+                    v-model="customer.billingAddress.houseNumber"
                     class="flex-auto"
                     autocomplete="off"
-                    :invalid="checkInputValid && newComputer.name.length == 0"/>
-                <small v-show="checkInputValid && newComputer.name.length == 0">
+                    :invalid="checkInputValid && customer.billingAddress.houseNumber"/>
+                <small v-show="checkInputValid && customer.billingAddress.houseNumber">
                     Feld darf nicht leer sein.
                 </small>
             </div>
@@ -114,11 +114,11 @@
 
                 <InputText
                     id="name"
-                    v-model="newCustomer.billingAddress.lastName"
+                    v-model="customer.billingAddress.zipCode"
                     class="flex-auto"
                     autocomplete="off"
-                    :invalid="checkInputValid && newComputer.name.length == 0"/>
-                <small v-show="checkInputValid && newComputer.name.length == 0">
+                    :invalid="checkInputValid && customer.billingAddress.zipCode"/>
+                <small v-show="checkInputValid && customer.billingAddress.zipCode">
                     Feld darf nicht leer sein.
                 </small>
             </div>
@@ -131,11 +131,11 @@
 
                 <InputText
                     id="name"
-                    v-model="newCustomer.billingAddress.lastName"
+                    v-model="customer.billingAddress.city"
                     class="flex-auto"
                     autocomplete="off"
-                    :invalid="checkInputValid && newComputer.name.length == 0"/>
-                <small v-show="checkInputValid && newComputer.name.length == 0">
+                    :invalid="checkInputValid && customer.billingAddress.city"/>
+                <small v-show="checkInputValid && customer.billingAddress.city">
                     Feld darf nicht leer sein.
                 </small>
             </div>
@@ -148,7 +148,7 @@
 
                 <InputText
                     id="name"
-                    v-model="newCustomer.billingAddress.lastName"
+                    v-model="customer.billingAddress.country"
                     class="flex-auto"
                     autocomplete="off"
                 ></InputText>
@@ -163,11 +163,11 @@
 
                 <InputText
                     id="name"
-                    v-model="newCustomer.billingAddress.lastName"
+                    v-model="customer.emailAddress"
                     class="flex-auto"
                     autocomplete="off"
-                    :invalid="checkInputValid && newComputer.name.length == 0"/>
-                <small v-show="checkInputValid && newComputer.name.length == 0">
+                    :invalid="checkInputValid && fieldIsInvalid(customer.emailAddress)"/>
+                <small v-show="checkInputValid && fieldIsInvalid(customer.emailAddress)">
                     Feld darf nicht leer sein.
                 </small>
             </div>
@@ -180,22 +180,139 @@
 
                 <InputText
                     id="name"
-                    v-model="newCustomer.billingAddress.lastName"
+                    v-model="customer.telNumber"
                     class="flex-auto"
-                    autocomplete="off"
-                    :invalid="checkInputValid && newComputer.name.length == 0"/>
-                <small v-show="checkInputValid && newComputer.name.length == 0">
-                    Feld darf nicht leer sein.
-                </small>
+                    autocomplete="off"/>
+               
             </div>
         </div>
         <div>
-            <Checkbox
+            <input
+                id="bothAddressesAreEqual"
                 v-model="bothAddressesAreEqual"
-                class="mr-2"
-                @change="copyBillingAddressToShippingAddress"
-            ></Checkbox>
+                type="checkbox"
+                @change="copyBillingAddressToShippingAddress">
+        
             <label for="bothAddressesAreEqual">Lieferadresse entspricht Rechnungsadresse</label>
+        </div>
+        <div v-if="!bothAddressesAreEqual">
+            <div class=" font-bold text-gray-900 mt-2  mb-4">Lieferadresse</div>
+            <div class="flex align-items-center gap-3 mb-3">
+                <label for="name" class=" w-10rem">
+                    Vorname<span class="text-pink-500">*</span>
+                </label>
+                <div class="flex flex-col grow">
+
+                    <InputText
+                        id="name"
+                        v-model="order.deliveryAddress.firstName"
+                        class="flex-auto"
+                        autocomplete="off"
+                        :invalid="checkInputValid && fieldIsInvalid(order.deliveryAddress.firstName)"/>
+                    <small v-show="checkInputValid && fieldIsInvalid(order.deliveryAddress.firstName)">
+                        Feld darf nicht leer sein.
+                    </small>
+                </div>
+            </div>
+            <div class="flex align-items-center gap-3 mb-3">
+                <label for="name" class="w-10rem">
+                    Nachname<span class="text-pink-500">*</span>
+                </label>
+                <div class="flex flex-col grow">
+
+                    <InputText
+                        id="name"
+                        v-model="order.deliveryAddress.lastName"
+                        class="flex-auto"
+                        autocomplete="off"
+                        :invalid="checkInputValid && fieldIsInvalid(order.deliveryAddress.lastName)"/>
+                    <small v-show="checkInputValid && fieldIsInvalid(order.deliveryAddress.lastName)">
+                        Feld darf nicht leer sein.
+                    </small>
+                </div>
+            </div>
+            <div class="flex align-items-center gap-3 mb-3">
+                <label for="name" class="w-10rem">
+                    Straße<span class="text-pink-500">*</span>
+                </label>
+                <div class="flex flex-col grow">
+
+                    <InputText
+                        id="name"
+                        v-model="order.deliveryAddress.street"
+                        class="flex-auto"
+                        autocomplete="off"
+                        :invalid="checkInputValid && fieldIsInvalid(order.deliveryAddress.street)"/>
+                    <small v-show="checkInputValid && fieldIsInvalid(order.deliveryAddress.street)">
+                        Feld darf nicht leer sein.
+                    </small>
+                </div>
+            </div>
+            <div class="flex align-items-center gap-3 mb-3">
+                <label for="name" class="w-10rem">
+                    Hausnummer<span class="text-pink-500">*</span>
+                </label>
+                <div class="flex flex-col grow">
+
+                    <InputText
+                        id="name"
+                        v-model="order.deliveryAddress.houseNumber"
+                        class="flex-auto"
+                        autocomplete="off"
+                        :invalid="checkInputValid && fieldIsInvalid(order.deliveryAddress.houseNumber)"/>
+                    <small v-show="checkInputValid && fieldIsInvalid(order.deliveryAddress.houseNumber)">
+                        Feld darf nicht leer sein.
+                    </small>
+                </div>
+            </div>
+            <div class="flex align-items-center gap-3 mb-3">
+                <label for="name" class="w-10rem">
+                    PLZ<span class="text-pink-500">*</span>
+                </label>
+                <div class="flex flex-col grow">
+
+                    <InputText
+                        id="name"
+                        v-model="order.deliveryAddress.zipCode"
+                        class="flex-auto"
+                        autocomplete="off"
+                        :invalid="checkInputValid && fieldIsInvalid(order.deliveryAddress.zipCode)"/>
+                    <small v-show="checkInputValid && fieldIsInvalid(order.deliveryAddress.zipCode)">
+                        Feld darf nicht leer sein.
+                    </small>
+                </div>
+            </div>
+            <div class="flex align-items-center gap-3 mb-3">
+                <label for="name" class="w-10rem">
+                    Ort<span class="text-pink-500">*</span>
+                </label>
+                <div class="flex flex-col grow">
+
+                    <InputText
+                        id="name"
+                        v-model="order.deliveryAddress.city"
+                        class="flex-auto"
+                        autocomplete="off"
+                        :invalid="checkInputValid && fieldIsInvalid(order.deliveryAddress.city)"/>
+                    <small v-show="checkInputValid && fieldIsInvalid(order.deliveryAddress.city)">
+                        Feld darf nicht leer sein.
+                    </small>
+                </div>
+            </div>
+            <div class="flex align-items-center gap-3 mb-3">
+                <label for="name" class="w-10rem">
+                    Land
+                </label>
+                <div class="flex flex-col grow">
+
+                    <InputText
+                        id="name"
+                        v-model="order.deliveryAddress.country"
+                        class="flex-auto"
+                        autocomplete="off"
+                    ></InputText>
+                </div>
+            </div>
         </div>
         <div>
             <div class="flex align-items-center gap-3 mb-3">
@@ -205,9 +322,10 @@
                 <div class="flex flex-col grow">
 
                     <Dropdown
+                        v-model="order.paymentMethod"
                         :options="['Rechnung', 'Kreditkarte']"
                     ></Dropdown>
-                    <small v-show="checkInputValid && newComputer.name.length == 0">
+                    <small v-show="checkInputValid && order.paymentMethod != undefined">
                         Feld darf nicht leer sein.
                     </small>
                 </div>
@@ -216,14 +334,26 @@
         <div class="flex justify-content-end gap-2">
             <Button
                 type="button"
-                label="Cancel"
+                label="Abbrechen"
                 severity="secondary"
                 @click="showOrderDialog = false"></Button>
             <Button
                 type="button"
-                label="Save"
+                label="Bestellen"
                 @click="saveOrder"></Button>
         </div>
+    </Dialog>
+    <Dialog
+        :visible="showBillingDialog"
+        :draggable="false">
+
+        <div class="text-xl font-bold text-gray-900  pb-5">Danke für Ihren Einkauf.</div>
+        <div class="text-md font-bold text-gray-900  pb-5">Produkte:</div>
+        <div class="flex justify-between" v-for="orderProduct in billingInfo.order_products" :key="orderProduct.id">
+            <span>{{ orderProduct.product.name }}</span>
+            <span>{{ orderProduct.product.price }}€</span>
+        </div>
+        <div>Gesamter Betrag: {{ productPricesSum }}€</div>
     </Dialog>
     
 </template>
@@ -238,19 +368,41 @@ import Checkbox from 'primevue/checkbox';
 import Dropdown from 'primevue/dropdown';
 import { useCart } from '../stores/cartStore';
 import { Customer, Address } from '@/utils/classes/Customer';
+import { Order, OrderProduct } from '@/utils/classes/Order';
+import {getBillingInformation} from '@/utils/Billing';
 const products = ref<Product[]>([]);
 const selectedItem = ref<Product>(new Product("", 0, 0, 0, ""));
 const visible = ref(false);
-const { items, size, add } = useCart();
+const { items, size, add, createOrderProducts } = useCart();
 
-const bothAddressesAreEqual = ref(false);
+const billingAddress = new Address("", "", "", "", "");
+const deliveryAddress = new Address("", "", "", "", "");
+
+const bothAddressesAreEqual = ref<boolean>(true);
 
 const showOrderDialog = ref(false);
 
-const newCustomer = ref<Customer>(new Customer("", "", "", new Address("", "", "", "")));
-const billingAddress = ref<Address>(new Address("", "", "", ""));
+const customer = ref<Customer>(new Customer(
+    "", 
+    "", 
+    billingAddress,
+    
+    
+));
 
-const deliveryAddress = ref<Address>(new Address("", "", "", ""));
+const order = ref<Order>( new Order(
+    deliveryAddress, 
+    "", // payment method
+    customer.value, 
+    "", // timestamp
+    [], // orderProducts
+    // id
+)
+);
+const orderProducts = ref<OrderProduct[]>([]);
+
+// marks fields as invalid if they are invalid (empty)
+const checkInputValid = ref(false);
 
 function copyBillingAddressToShippingAddress() {
     if (bothAddressesAreEqual.value) {
@@ -258,10 +410,70 @@ function copyBillingAddressToShippingAddress() {
     }
 }
 
-function saveOrder() {
-    console.log(newCustomer.value);
+async function saveOrder() {
+    console.log(customer.value);
     console.log(billingAddress.value);
     console.log(deliveryAddress.value);
+    console.log(order.value);
+
+    // check if all required fields are filled
+    checkInputValid.value = true;
+
+    // create billing address
+    await customer.value.billingAddress.create().then((response) => {
+        return response.json();
+    }).then((data) => {
+        console.log(data);
+        customer.value.billingAddressId = data.id;
+    });
+
+    // create the customer
+    await customer.value.create().then((response) => {
+        return response.json();
+    }).then((data) => {
+        console.log(data);
+        // customer.value.id = data.id;
+        order.value.customerId = data.id;
+    });
+
+    if (bothAddressesAreEqual.value) {
+        order.value.deliveryAddressId = customer.value.billingAddressId;
+    }
+    // create delivery address
+    else {
+        order.value.deliveryAddress.create().then((response) => {
+            return response.json();
+        }).then((data) => {
+            console.log(data);
+            order.value.deliveryAddressId = data.id;
+        });
+    }
+
+    // set order datetime to now
+    order.value.dateOrdered = new Date().toISOString().replace("T", " ");
+
+    // create the order
+    await order.value.create().then((response) => {
+        return response.json();
+    }).then((data) => {
+        console.log(data);
+        order.value.id = data.id;
+    });
+
+    console.log(items);
+
+    await createOrderProducts(order.value.id);
+
+    showOrderDialog.value = false;
+
+    await getBillingInformation(order.value.id).then((resp) => {
+        return resp.json();
+    }).then((data) => {
+        console.log(data);
+        billingInfo.value = data;
+        //showOrderDialog.value = false;
+        showBillingDialog.value = true;
+    });
 }
 
 const imageUrl = computed(() => {
@@ -271,4 +483,27 @@ const imageUrl = computed(() => {
 function getImageUrl(product: Product) {
     return __API_URL__ + "/uploads/" + product.imagePath;
 }
+
+function fieldIsInvalid(field) {
+    console.log(field);
+    console.log(field.value);
+    return field.value == undefined || field.value.length == 0;
+}
+
+
+// SHOW BILLING
+
+const showBillingDialog = ref(false);
+const billingInfo = ref();
+
+const productPricesSum = computed(() => {
+    let sum = 0;
+    billingInfo.value.order_products.forEach((orderProduct) => {
+        sum += orderProduct.product.price;
+    });
+
+    // need to round it because JS does weird things when calculating and you won't get the exact number
+    return Math.round(sum * 100) / 100;
+});
+
 </script>

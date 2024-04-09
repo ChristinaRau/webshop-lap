@@ -10,10 +10,10 @@ class Customer(Base):
     __tablename__ = "customer"
 
     id: Mapped[int] = mapped_column(primary_key=True)
-    billing_address_id: Mapped[int] = mapped_column(ForeignKey("billing_address.id"))
+    billing_address_id: Mapped[int] = mapped_column(ForeignKey("address.id"))
     email_address: Mapped[str]
     tel_number: Mapped[Optional[str]]
-    billing_address: Mapped["Address"] = relationship()
+    billing_address: Mapped["Address"] = relationship("Address", lazy="subquery")
 
     def to_dict(self):
         return {
@@ -21,11 +21,6 @@ class Customer(Base):
             "billing_address_id": self.billing_address_id,
             "email_address": self.email_address,
             "tel_number": self.tel_number,
-            "billing_address": (
-                self.billing_address.to_dict()
-                if self.billing_address is not None
-                else ""
-            ),
         }
 
     @staticmethod

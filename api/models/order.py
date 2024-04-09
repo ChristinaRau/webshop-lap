@@ -12,10 +12,10 @@ class Order(Base):
 
     id: Mapped[int] = mapped_column(primary_key=True)
     customer_id: Mapped[int] = mapped_column(ForeignKey("customer.id"))
-    delivery_address_id: Mapped[int] = mapped_column(ForeignKey("delivery_address.id"))
+    delivery_address_id: Mapped[int] = mapped_column(ForeignKey("address.id"))
     payment_method: Mapped[str]
     date_ordered: Mapped[Optional[dt.datetime]]
-    delivery_address: Mapped["Address"] = relationship()
+    delivery_address: Mapped["Address"] = relationship("Address")
     order_products: Mapped[List["OrderProduct"]] = relationship()
 
     def to_dict(self):
