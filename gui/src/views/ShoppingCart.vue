@@ -26,9 +26,127 @@
             
         </div>
 
-        <Button>Bestellen</Button>
+        <Button @click="showOrderDialog = true">Bestellen</Button>
     </div>
-   
+    <Dialog
+        modal
+        :visible="showOrderDialog"
+        header="Bestellung aufgeben"
+        :draggable="false"
+    >
+        <div class="flex align-items-center gap-3 mb-3">
+            <label for="name" class="font-semibold w-6rem">Name</label>
+            <div class="flex flex-col grow">
+
+                <InputText
+                    id="name"
+                    v-model="newComputer.name"
+                    class="flex-auto"
+                    autocomplete="off"
+                    :invalid="checkInputValid && newComputer.name.length == 0"/>
+                <small v-show="checkInputValid && newComputer.name.length == 0">
+                    Must not be empty.
+                </small>
+            </div>
+        </div>
+        
+        <div class="flex align-items-center gap-3 mb-5">
+            <label for="desc" class="font-semibold w-6rem">Description</label>
+            <InputText
+                id="desc"
+                v-model="newComputer.description"
+                class="flex-auto"
+                autocomplete="off" />
+        </div>
+
+        <div class="flex align-items-center gap-3 mb-5">
+            <label for="desc" class="font-semibold w-6rem">Processor</label>
+            <div class="flex flex-col grow">
+                <InputText
+                    id="desc"
+                    v-model="newComputer.processor"
+                    class="flex-auto"
+                    autocomplete="off"
+                    :invalid="checkInputValid && newComputer.processor.length == 0" />
+                <small v-show="checkInputValid && newComputer.processor.length == 0">
+                    Must not be empty.
+                </small>
+            </div>
+        </div>
+
+        <div class="flex align-items-center gap-3 mb-5">
+            <label for="desc" class="font-semibold w-6rem">Storage</label>
+            <InputNumber
+                id="desc"
+                v-model="newComputer.storageGigabyte"
+                class="flex-auto"
+                autocomplete="off" 
+                show-buttons
+                :step="100"
+                :min="0"/>
+            GB
+        </div>
+
+        <div class="flex align-items-center gap-3 mb-5">
+            <label for="desc" class="font-semibold w-6rem">RAM</label>
+            <InputNumber
+                id="desc"
+                v-model="newComputer.ramGigabyte"
+                class="flex-auto"
+                autocomplete="off"
+                show-buttons
+                :step="4"
+                :min="0" />
+            GB
+        </div>
+
+        <div class="flex align-items-center gap-3 mb-5">
+            <label for="desc" class="font-semibold w-6rem">Price</label>
+            <InputNumber
+                id="desc"
+                v-model="newComputer.price"
+                class="flex-auto"
+                autocomplete="off"
+                show-buttons
+                :step="100"
+                :min="0"
+                mode="currency"
+                currency="EUR"
+            />
+            
+        </div>
+
+        <div class="flex align-items-center gap-3 mb-5">
+            <label for="desc" class="font-semibold w-6rem">Image</label>
+            
+            <FileUpload
+                mode="basic"
+                name="file"
+                :url="uploadUrl"
+                accept="image/*"
+                :max-file-size="1000000"
+                auto 
+                @upload="onUpload"/>
+
+            <img
+                v-if="uploadedFileUrl != ''"
+                :src="uploadedFileUrl"
+                class="max-w-16 max-h-16"
+            />
+        </div>
+
+        <div class="flex justify-content-end gap-2">
+            <Button
+                type="button"
+                label="Cancel"
+                severity="secondary"
+                @click="showCreationDialog = false"></Button>
+            <Button
+                type="button"
+                label="Save"
+                @click="saveNewComputer"></Button>
+        </div>
+    </Dialog>
     
 </template>
 <script setup lang="ts">
@@ -44,7 +162,7 @@ const visible = ref(false);
 const { items, size, add } = useCart();
 
 
-
+const showOrderDialog = ref(false);
 
 
 const imageUrl = computed(() => {

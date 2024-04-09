@@ -1,8 +1,9 @@
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy import ForeignKey, DateTime, func
 from typing import Optional
 import datetime as dt
 from .base import Base
+from .address import Address
 
 
 class Order(Base):
@@ -13,6 +14,7 @@ class Order(Base):
     delivery_address_id: Mapped[int] = mapped_column(ForeignKey("delivery_address.id"))
     payment_method: Mapped[str]
     date_ordered: Mapped[Optional[dt.datetime]]
+    delivery_address: Mapped["Address"] = relationship()
 
     def to_dict(self):
         return {
@@ -21,6 +23,11 @@ class Order(Base):
             "delivery_address_id": self.delivery_address_id,
             "payment_method": self.payment_method,
             "date_ordered": self.date_ordered,
+            "delivery_address": (
+                self.delivery_address.to_dict()
+                if self.delivery_address is not None
+                else ""
+            ),
         }
 
     @staticmethod

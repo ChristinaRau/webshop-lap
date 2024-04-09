@@ -2,21 +2,20 @@
 import { sendRequest } from "../Request";
 import { camelToSnakeCase } from "../StringUtils";
 
-export class Addition {
+export class ProductDetail {
     id?: number;
+    productId: number;
     name: string;
     value: string;
-    price: number;
-    static path = "addition";
 
-    constructor(name: string, value: string, price: number, id: number) {
+    constructor(productId: number, name: string, value: string, id?: number) {
+        this.productId = productId;
         this.name = name;
         this.value = value;
-        this.price = price;
         this.id = id;
     }
 
-    public static mandatoryAttributes = ["name", "value", "price"]
+    public static mandatoryAttributes = ["name", "value", "product_id"];
 
     public static checkMandatoryAttributes(obj: Record<string, any>) {
         return this.mandatoryAttributes.every((el) => Object.keys(obj).includes(el))
@@ -34,13 +33,67 @@ export class Addition {
     public static fromSnakeCaseObject(snakeCaseObj: Record<string, any>) {
         // check if every needed attribute is in the snake case object
         if (this.checkMandatoryAttributes(snakeCaseObj))
-            return new Addition(
+            return new ProductDetail(
+                snakeCaseObj.product_id,
                 snakeCaseObj.name,
                 snakeCaseObj.value,
-                snakeCaseObj.price,
                 snakeCaseObj.id
                 )
-        return new Addition("", "", 0, -1);
+        return new ProductDetail(-1, "", "", -1);
+    }
+
+}
+
+export class Product {
+    id?: number;
+    name: string;
+    price: number;
+    imagePath?: string;
+    productDetails?: ProductDetail[];
+    static path = "product";
+
+    constructor(name: string, price: number, imagePath: string, productDetails?: any, id?: number) {
+        this.name = name;
+        this.price = price;
+        this.imagePath = imagePath;
+        this.productDetails = productDetails;
+        this.id = id;
+    }
+
+    public static mandatoryAttributes = ["name", "price"];
+
+    public static checkMandatoryAttributes(obj: Record<string, any>) {
+        return this.mandatoryAttributes.every((el) => Object.keys(obj).includes(el))
+    }
+
+    public toSnakeCaseObject() {
+        const newObject = <Record<string, any>>{}
+        for (const key in this) {
+            newObject[camelToSnakeCase(key)] = this[key]
+        }
+
+        return newObject;
+    }
+
+    public static fromSnakeCaseObject(snakeCaseObj: Record<string, any>) {
+        // check if every needed attribute is in the snake case object
+        let productDetailsList: ProductDetail[] = [];
+
+        if (snakeCaseObj.product_details) {
+            productDetailsList = snakeCaseObj.product_details.map((obj: Record<string, any>) => ProductDetail.fromSnakeCaseObject(obj))
+        }
+
+        console.log(productDetailsList)
+
+        if (this.checkMandatoryAttributes(snakeCaseObj))
+            return new Product(
+                snakeCaseObj.name,
+                snakeCaseObj.price,
+                snakeCaseObj.image_path,
+                productDetailsList,
+                snakeCaseObj.id
+                )
+        return new Product("", 0, "", [], -1);
     }
 
     // static async loadById(id: number) {
@@ -50,7 +103,7 @@ export class Addition {
     // }
 
 
-    static async getList(): Promise<Addition[]> {
+    static async getList(): Promise<Product[]> {
         const jsonResponse: Record<string, any> | Array<Record<string, any>> = await sendRequest({
             method: "GET",
             path: this.path
@@ -63,7 +116,7 @@ export class Addition {
         return jsonResponse.map((obj: Record<string, any>) => this.fromSnakeCaseObject(obj))
     }
 
-    static async get(id: number): Promise<Addition> {
+    static async get(id: number): Promise<Product> {
         const jsonResponse: Record<string, any> | Array<Record<string, any>> = await sendRequest({
             id:  id,
             method: "GET",
@@ -80,7 +133,7 @@ export class Addition {
     create() {
         return sendRequest({
             method: "POST",
-            path: Addition.path,
+            path: Product.path,
             body: JSON.stringify(this.toSnakeCaseObject())
         })
     }
@@ -89,7 +142,7 @@ export class Addition {
         return sendRequest({
             id: this.id,
             method: "PATCH",
-            path: Addition.path,
+            path: Product.path,
             body: JSON.stringify(this.toSnakeCaseObject())
         })
     }
@@ -98,7 +151,7 @@ export class Addition {
         return sendRequest({
             id: this.id,
             method: "DELETE",
-            path: Addition.path
+            path: Product.path
         })
     }
 
