@@ -1,67 +1,78 @@
 @startuml
 
-!theme reddress-lightblue
+skin rose
 
-
-entity Reseller {
+entity product {
 *id: int <<PK>>
 --
 *name: varchar
-}
-
-entity ComputerBaseModel {
-*id: int <<PK>>
---
-*name: varchar
-*ram_gigabyte: float 
 *price: float
-*storage_gigabyte: float
-*processor: string
-image_path: string
-description: varchar
+image_path: varchar
 }
 
-entity OrderComputer {
+entity product_detail {
 *id: int <<PK>>
 --
-*computer_base_model_id: int <<FK>>
-*orderId: int <<FK>>
+*product_id: int <<FK>>
+*name: varchar
+*value: varchar
 }
 
-entity Addition {
-  *id: int <<PK>>
-  --
-  *name: string
-  *value: string
-  *price: float
-}
-
-entity OrderComputerAddition {
-  *id: int <<PK>>
-  --
-  *order_computer_id: int <<FK>>
-  *addition_id: int <<FK>>
-}
-
-entity Order {
+entity customer {
 *id: int <<PK>>
 --
-*reseller_id: int <<FK>>
-*datetime: OffsetDateTime
+*billing_address_id: int <<FK>>
+*email_address: varchar
+tel_number: varchar
 }
 
-entity Test {
-  *id: int <<PK>>
-  --
-  *date_needed_id: datetime <<FK>>
-  date_optional: datetime
+entity address {
+*id: int <<PK>>
+--
+*first_name
+*last_name
+*street: varchar
+*house_number: varchar
+*zip_code: varchar
+*city: varchar
+*country: varchar
 }
 
+entity order {
+*id: int <<PK>>
+--
+*customer_id: int <<FK>>
+*delivery_address_id: int <<FK>>
+*payment_method: varchar
+date_ordered: timestamp
 
-Order "1".."0..n" OrderComputer
-Order "0..n".."1" Reseller 
-ComputerBaseModel "1".."0..n" OrderComputer
-OrderComputer "1".."0..n" OrderComputerAddition
-Addition "1".."0..n" OrderComputerAddition
+}
+
+entity order_product {
+*id: int <<PK>>
+--
+*order_id: int <<FK>>
+*product_id: int <<FK>>
+}
+
+entity user {
+*id: int <<PK>>
+--
+*customer_id: int <<FK>>
+*username: varchar
+*password: varchar
+}
+
+customer "1".."n" order
+order "1".."n" order_product
+product "1".."n" order_product
+address "1".."n" customer
+address "1".."n" order
+product "1".."n" product_detail
+user "1".."n" customer
+
+
+
+
 
 @enduml
