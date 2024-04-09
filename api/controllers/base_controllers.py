@@ -99,5 +99,8 @@ register_api(app, Product, "product")
 register_api(app, Customer, "customer")
 # register_api(app, Order, "order")
 register_api(app, Order, "order")
+register_api(app, ProductDetail, "product_detail")
+register_api(app, OrderProduct, "order_product")
+register_api(app, Address, "address")
 
 # stuff with relationships

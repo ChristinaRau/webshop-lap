@@ -1,46 +1,39 @@
-import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
-import { checkLogin } from '../utils/Authentication'
-import ComputerView from '../views/ComputerView.vue'
+import { createRouter, createWebHistory } from 'vue-router';
+import HomeView from '../views/HomeView.vue';
+import { checkLogin } from '../utils/Authentication';
+import ProductList from '@/views/ProductList.vue';
+import ShoppingCart from '@/views/ShoppingCart.vue';
 
 const router = createRouter({
-  history: createWebHistory("."),
-  routes: [
-    {
-      path: '/',
-      name: 'home',
-      component: HomeView
-    },
-    {
-      path: '/about',
-      name: 'about',
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () => import('../views/AboutView.vue')
-    },
-    {
-      path: '/stats',
-      name: 'stats',
-      component: () => import('../views/StatisticsView.vue')
-    },
-    {
-      path: '/login',
-      name: 'login',
-      component: () => import('../views/LoginView.vue')
-    },
-    {
-      path: '/admin_panel',
-      name: 'adminpanel',
-      component: () => import('../views/AdminView.vue')
-    },
-    {
-      path: "/computers",
-      name: "computers",
-      component: ComputerView
-    }
-  ]
-})
+    history: createWebHistory("."),
+    routes: [
+        {
+            path: '/',
+            name: 'home',
+            redirect: { name: 'products' }
+        },
+        {
+            path: '/stats',
+            name: 'stats',
+            component: () => import('../views/StatisticsView.vue')
+        },
+        {
+            path: '/login',
+            name: 'login',
+            component: () => import('../views/LoginView.vue')
+        },
+        {
+            path: "/products",
+            name: "products",
+            component: ProductList
+        },
+        {
+            path: "/shoppingcart",
+            name: "shoppingcart",
+            component: ShoppingCart
+        }
+    ]
+});
 
 /* router.beforeEach(async (to, from) => {
   const isAuthenticated = await checkLogin();
@@ -50,4 +43,4 @@ const router = createRouter({
   }
 }) */
 
-export default router
+export default router;

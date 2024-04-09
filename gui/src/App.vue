@@ -5,12 +5,7 @@
     <Menubar :model="menuItems">
         <template #end>
             <div class="flex align-items-center gap-2 w-10">
-                <Dropdown
-                    class="w-20"
-                    :options="themeOptions"
-                    @change="onThemeSelection"
-
-                />
+                <RouterLink :to="{name: 'shoppingcart'}">Warenkorb</RouterLink>
             </div>
         </template>
     </Menubar>
@@ -35,12 +30,8 @@ const { items, add, size, count } = useCart();
 
 const menuItems = ref<MenuItem[]>([
     {
-        label: "Computers",
-        url: "/computers"
-    },
-    {
-        label: "Admin panel",
-        url: "/admin_panel"
+        label: "Produkte",
+        url: "/products"
     },
     {
         label: "Login",

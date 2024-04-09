@@ -20,7 +20,7 @@ app.config["UPLOAD_FOLDER"] = "./images"
 # cross origin
 CORS(
     app,
-    origins="http://localhost:5173/*",
+    origins=["https://localhost:8080/*", "http://localhost:8080/*"],
     supports_credentials=True,
 )
 

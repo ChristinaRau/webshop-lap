@@ -24,7 +24,7 @@ context.use_certificate_file("../domain.crt")
 if __name__ == "__main__":
     CORS(
         app,
-        origins="http://localhost:5173/*",
+        origins=["https://localhost:8080/*", "http://localhost:8080/*"],
         supports_credentials=True,
     )
 
