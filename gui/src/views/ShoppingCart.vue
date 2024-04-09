@@ -34,117 +34,195 @@
         header="Bestellung aufgeben"
         :draggable="false"
     >
+        <div class="mb-4">
+            Die mit einem Stern(<span class="text-pink-500">*</span>) markierten Felder müssen ausgefüllt werden.
+        </div>
+        <div class=" font-bold text-gray-900 mt-2  mb-4">Rechnungsadresse</div>
         <div class="flex align-items-center gap-3 mb-3">
-            <label for="name" class="font-semibold w-6rem">Name</label>
+            <label for="name" class=" w-10rem">
+                Vorname<span class="text-pink-500">*</span>
+            </label>
             <div class="flex flex-col grow">
 
                 <InputText
                     id="name"
-                    v-model="newComputer.name"
+                    v-model="newCustomer.billingAddress.firstName"
                     class="flex-auto"
                     autocomplete="off"
                     :invalid="checkInputValid && newComputer.name.length == 0"/>
                 <small v-show="checkInputValid && newComputer.name.length == 0">
-                    Must not be empty.
+                    Feld darf nicht leer sein.
                 </small>
             </div>
         </div>
-        
-        <div class="flex align-items-center gap-3 mb-5">
-            <label for="desc" class="font-semibold w-6rem">Description</label>
-            <InputText
-                id="desc"
-                v-model="newComputer.description"
-                class="flex-auto"
-                autocomplete="off" />
-        </div>
-
-        <div class="flex align-items-center gap-3 mb-5">
-            <label for="desc" class="font-semibold w-6rem">Processor</label>
+        <div class="flex align-items-center gap-3 mb-3">
+            <label for="name" class="w-10rem">
+                Nachname<span class="text-pink-500">*</span>
+            </label>
             <div class="flex flex-col grow">
+
                 <InputText
-                    id="desc"
-                    v-model="newComputer.processor"
+                    id="name"
+                    v-model="newCustomer.billingAddress.lastName"
                     class="flex-auto"
                     autocomplete="off"
-                    :invalid="checkInputValid && newComputer.processor.length == 0" />
-                <small v-show="checkInputValid && newComputer.processor.length == 0">
-                    Must not be empty.
+                    :invalid="checkInputValid && newComputer.name.length == 0"/>
+                <small v-show="checkInputValid && newComputer.name.length == 0">
+                    Feld darf nicht leer sein.
                 </small>
             </div>
         </div>
+        <div class="flex align-items-center gap-3 mb-3">
+            <label for="name" class="w-10rem">
+                Straße<span class="text-pink-500">*</span>
+            </label>
+            <div class="flex flex-col grow">
 
-        <div class="flex align-items-center gap-3 mb-5">
-            <label for="desc" class="font-semibold w-6rem">Storage</label>
-            <InputNumber
-                id="desc"
-                v-model="newComputer.storageGigabyte"
-                class="flex-auto"
-                autocomplete="off" 
-                show-buttons
-                :step="100"
-                :min="0"/>
-            GB
+                <InputText
+                    id="name"
+                    v-model="newCustomer.billingAddress.lastName"
+                    class="flex-auto"
+                    autocomplete="off"
+                    :invalid="checkInputValid && newComputer.name.length == 0"/>
+                <small v-show="checkInputValid && newComputer.name.length == 0">
+                    Feld darf nicht leer sein.
+                </small>
+            </div>
         </div>
+        <div class="flex align-items-center gap-3 mb-3">
+            <label for="name" class="w-10rem">
+                Hausnummer<span class="text-pink-500">*</span>
+            </label>
+            <div class="flex flex-col grow">
 
-        <div class="flex align-items-center gap-3 mb-5">
-            <label for="desc" class="font-semibold w-6rem">RAM</label>
-            <InputNumber
-                id="desc"
-                v-model="newComputer.ramGigabyte"
-                class="flex-auto"
-                autocomplete="off"
-                show-buttons
-                :step="4"
-                :min="0" />
-            GB
+                <InputText
+                    id="name"
+                    v-model="newCustomer.billingAddress.lastName"
+                    class="flex-auto"
+                    autocomplete="off"
+                    :invalid="checkInputValid && newComputer.name.length == 0"/>
+                <small v-show="checkInputValid && newComputer.name.length == 0">
+                    Feld darf nicht leer sein.
+                </small>
+            </div>
         </div>
+        <div class="flex align-items-center gap-3 mb-3">
+            <label for="name" class="w-10rem">
+                PLZ<span class="text-pink-500">*</span>
+            </label>
+            <div class="flex flex-col grow">
 
-        <div class="flex align-items-center gap-3 mb-5">
-            <label for="desc" class="font-semibold w-6rem">Price</label>
-            <InputNumber
-                id="desc"
-                v-model="newComputer.price"
-                class="flex-auto"
-                autocomplete="off"
-                show-buttons
-                :step="100"
-                :min="0"
-                mode="currency"
-                currency="EUR"
-            />
-            
+                <InputText
+                    id="name"
+                    v-model="newCustomer.billingAddress.lastName"
+                    class="flex-auto"
+                    autocomplete="off"
+                    :invalid="checkInputValid && newComputer.name.length == 0"/>
+                <small v-show="checkInputValid && newComputer.name.length == 0">
+                    Feld darf nicht leer sein.
+                </small>
+            </div>
         </div>
+        <div class="flex align-items-center gap-3 mb-3">
+            <label for="name" class="w-10rem">
+                Ort<span class="text-pink-500">*</span>
+            </label>
+            <div class="flex flex-col grow">
 
-        <div class="flex align-items-center gap-3 mb-5">
-            <label for="desc" class="font-semibold w-6rem">Image</label>
-            
-            <FileUpload
-                mode="basic"
-                name="file"
-                :url="uploadUrl"
-                accept="image/*"
-                :max-file-size="1000000"
-                auto 
-                @upload="onUpload"/>
-
-            <img
-                v-if="uploadedFileUrl != ''"
-                :src="uploadedFileUrl"
-                class="max-w-16 max-h-16"
-            />
+                <InputText
+                    id="name"
+                    v-model="newCustomer.billingAddress.lastName"
+                    class="flex-auto"
+                    autocomplete="off"
+                    :invalid="checkInputValid && newComputer.name.length == 0"/>
+                <small v-show="checkInputValid && newComputer.name.length == 0">
+                    Feld darf nicht leer sein.
+                </small>
+            </div>
         </div>
+        <div class="flex align-items-center gap-3 mb-3">
+            <label for="name" class="w-10rem">
+                Land
+            </label>
+            <div class="flex flex-col grow">
 
+                <InputText
+                    id="name"
+                    v-model="newCustomer.billingAddress.lastName"
+                    class="flex-auto"
+                    autocomplete="off"
+                ></InputText>
+            </div>
+        </div>
+        <div class=" font-bold text-gray-900 mt-2  mb-4">Kontaktdaten</div>
+        <div class="flex align-items-center gap-3 mb-3">
+            <label for="name" class="w-10rem">
+                E-Mail-Adresse<span class="text-pink-500">*</span>
+            </label>
+            <div class="flex flex-col grow">
+
+                <InputText
+                    id="name"
+                    v-model="newCustomer.billingAddress.lastName"
+                    class="flex-auto"
+                    autocomplete="off"
+                    :invalid="checkInputValid && newComputer.name.length == 0"/>
+                <small v-show="checkInputValid && newComputer.name.length == 0">
+                    Feld darf nicht leer sein.
+                </small>
+            </div>
+        </div>
+        <div class="flex align-items-center gap-3 mb-3">
+            <label for="name" class="w-10rem">
+                Telefonnummer
+            </label>
+            <div class="flex flex-col grow">
+
+                <InputText
+                    id="name"
+                    v-model="newCustomer.billingAddress.lastName"
+                    class="flex-auto"
+                    autocomplete="off"
+                    :invalid="checkInputValid && newComputer.name.length == 0"/>
+                <small v-show="checkInputValid && newComputer.name.length == 0">
+                    Feld darf nicht leer sein.
+                </small>
+            </div>
+        </div>
+        <div>
+            <Checkbox
+                v-model="bothAddressesAreEqual"
+                class="mr-2"
+                @change="copyBillingAddressToShippingAddress"
+            ></Checkbox>
+            <label for="bothAddressesAreEqual">Lieferadresse entspricht Rechnungsadresse</label>
+        </div>
+        <div>
+            <div class="flex align-items-center gap-3 mb-3">
+                <label for="name" class="w-10rem">
+                    Zahlungsart<span class="text-pink-500">*</span>
+                </label>
+                <div class="flex flex-col grow">
+
+                    <Dropdown
+                        :options="['Rechnung', 'Kreditkarte']"
+                    ></Dropdown>
+                    <small v-show="checkInputValid && newComputer.name.length == 0">
+                        Feld darf nicht leer sein.
+                    </small>
+                </div>
+            </div>
+        </div>
         <div class="flex justify-content-end gap-2">
             <Button
                 type="button"
                 label="Cancel"
                 severity="secondary"
-                @click="showCreationDialog = false"></Button>
+                @click="showOrderDialog = false"></Button>
             <Button
                 type="button"
                 label="Save"
-                @click="saveNewComputer"></Button>
+                @click="saveOrder"></Button>
         </div>
     </Dialog>
     
@@ -155,15 +233,36 @@ import { Product } from '@/utils/classes/Product';
 import Dialog from 'primevue/dialog';
 import Button from 'primevue/button';
 import Image from 'primevue/image';
+import InputText from 'primevue/inputtext';
+import Checkbox from 'primevue/checkbox';
+import Dropdown from 'primevue/dropdown';
 import { useCart } from '../stores/cartStore';
+import { Customer, Address } from '@/utils/classes/Customer';
 const products = ref<Product[]>([]);
 const selectedItem = ref<Product>(new Product("", 0, 0, 0, ""));
 const visible = ref(false);
 const { items, size, add } = useCart();
 
+const bothAddressesAreEqual = ref(false);
 
 const showOrderDialog = ref(false);
 
+const newCustomer = ref<Customer>(new Customer("", "", "", new Address("", "", "", "")));
+const billingAddress = ref<Address>(new Address("", "", "", ""));
+
+const deliveryAddress = ref<Address>(new Address("", "", "", ""));
+
+function copyBillingAddressToShippingAddress() {
+    if (bothAddressesAreEqual.value) {
+        deliveryAddress.value = billingAddress.value;
+    }
+}
+
+function saveOrder() {
+    console.log(newCustomer.value);
+    console.log(billingAddress.value);
+    console.log(deliveryAddress.value);
+}
 
 const imageUrl = computed(() => {
     return __API_URL__ + "/uploads/" + selectedItem.value.imagePath;

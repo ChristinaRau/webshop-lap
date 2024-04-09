@@ -593,6 +593,14 @@ video {
     margin-right: 0.5rem;
   }
 
+  .mb-4{
+    margin-bottom: 1rem;
+  }
+
+  .mt-2{
+    margin-top: 0.5rem;
+  }
+
   .block{
     display: block;
   }
@@ -751,6 +759,11 @@ video {
   .text-gray-900{
     --tw-text-opacity: 1;
     color: rgb(17 24 39 / var(--tw-text-opacity));
+  }
+
+  .text-pink-500{
+    --tw-text-opacity: 1;
+    color: rgb(236 72 153 / var(--tw-text-opacity));
   }
 
   .no-underline{
