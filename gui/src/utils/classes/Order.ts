@@ -1,29 +1,22 @@
 
 import { sendRequest } from "../Request";
 import { camelToSnakeCase } from "../StringUtils";
+import { Product } from "./Product";
+import { Address, Customer } from "./Customer.js";
 
-export class Address {
+export class OrderProduct {
     id?: number;
-    firstName: string;
-    lastName: string;
-    street: string;
-    houseNumber: string;
-    city: string;
-    postalCode: string;
-    country?: string;
+    product?: Product;
+    order?: Order;
 
-    constructor(firstName: string, lastName: string, street: string, houseNumber: string, city: string, postalCode: string, country?: string, id?: number) {    
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.street = street;
-        this.houseNumber = houseNumber;
-        this.city = city;
-        this.postalCode = postalCode;
-        this.country = country;
+    constructor(product: Product, order: Order, id?: number)
+    {
+        this.product = product;
+        this.order = order;
         this.id = id;
     }
 
-    public static mandatoryAttributes = ["first_name", "last_name", "street", "house_number", "city", "postal_code"];
+    public static mandatoryAttributes = ["order_id", "product_id"];
 
     public static checkMandatoryAttributes(obj: Record<string, any>) {
         return this.mandatoryAttributes.every((el) => Object.keys(obj).includes(el));
@@ -41,37 +34,35 @@ export class Address {
     public static fromSnakeCaseObject(snakeCaseObj: Record<string, any>) {
         // check if every needed attribute is in the snake case object
         if (this.checkMandatoryAttributes(snakeCaseObj))
-            return new Address(
-                snakeCaseObj.first_name,
-                snakeCaseObj.last_name,
-                snakeCaseObj.street,
-                snakeCaseObj.house_number,
-                snakeCaseObj.city,
-                snakeCaseObj.postal_code,
-                snakeCaseObj.country,
-                snakeCaseObj.id
+            return new OrderProduct(
+                snakeCaseObj.product_id,
+                snakeCaseObj.order_id
             );
-        return new Address("", "", "", "", "", "", "", -1);
+        return new OrderProduct(-1, -1, -1);
     }
 
 }
 
-export class Customer {
+export class Order {
     id?: number;
-    emailAddress: string;
-    telNumber?: string;
-    billingAddress?: Address;
+    deliveryAddress?: Address;
+    paymentMethod?: string;
+    customer?: Customer;
+    dateOrdered?: string;
+    orderProducts?: OrderProduct[];
 
-    static path = "customer";
+    static path = "order";
 
-    constructor(emailAddress: string, telNumber?: string, billingAddress?: Address, id?: number) {
-        this.emailAddress = emailAddress;
-        this.telNumber = telNumber;
-        this.billingAddress = billingAddress;
+    constructor(deliveryAddress: Address, paymentMethod: string, customer: Customer, dateOrdered: string, orderProducts: OrderProduct[], id?: number) {
+        this.deliveryAddress = deliveryAddress;
+        this.paymentMethod = paymentMethod;
+        this.customer = customer;
+        this.dateOrdered = dateOrdered;
+        this.orderProducts = orderProducts;
         this.id = id;
     }
 
-    public static mandatoryAttributes = ["email_address"];
+    public static mandatoryAttributes = ["delivery_address_id", "payment_method", "customer_id"];
 
     public static checkMandatoryAttributes(obj: Record<string, any>) {
         return this.mandatoryAttributes.every((el) => Object.keys(obj).includes(el));
@@ -88,25 +79,36 @@ export class Customer {
 
     public static fromSnakeCaseObject(snakeCaseObj: Record<string, any>) {
         // check if every needed attribute is in the snake case object
-        let billingAddress: Address | undefined;
+        let orderProductsList: OrderProduct[] = [];
 
-        if (snakeCaseObj.billing_address) {
-            billingAddress = Address.fromSnakeCaseObject(snakeCaseObj.billing_address);
+        if (snakeCaseObj.order_products) {
+            orderProductsList = snakeCaseObj.order_products.map((obj: Record<string, any>) => OrderProduct.fromSnakeCaseObject(obj));
         }
 
-        console.log(billingAddress);
+        if (snakeCaseObj.delivery_address) {
+            snakeCaseObj.delivery_address = Address.fromSnakeCaseObject(snakeCaseObj.delivery_address);
+        }
+
+        if (snakeCaseObj.customer) {
+            snakeCaseObj.customer = Customer.fromSnakeCaseObject(snakeCaseObj.customer);
+        }
+
+
+        console.log(orderProductsList);
 
         if (this.checkMandatoryAttributes(snakeCaseObj))
-            return new Customer(
-                snakeCaseObj.email_address,
-                snakeCaseObj.tel_number,
-                snakeCaseObj.billing_address,
+            return new Order(
+                snakeCaseObj.delivery_address,
+                snakeCaseObj.payment_method,
+                snakeCaseObj.customer,
+                snakeCaseObj.date_ordered,
+                orderProductsList,
                 snakeCaseObj.id
             );
-        return new Customer("", "", undefined, -1);
+        return new Order(new Address("", "", "", "", "", "", "", -1), "", new Customer("", "", undefined, -1), "", [], -1);
     }
 
-    static async getList(): Promise<Customer[]> {
+    static async getList(): Promise<Order[]> {
         const jsonResponse: Record<string, any> | Array<Record<string, any>> = await sendRequest({
             method: "GET",
             path: this.path
@@ -119,7 +121,7 @@ export class Customer {
         return jsonResponse.map((obj: Record<string, any>) => this.fromSnakeCaseObject(obj));
     }
 
-    static async get(id: number): Promise<Customer> {
+    static async get(id: number): Promise<Order> {
         const jsonResponse: Record<string, any> | Array<Record<string, any>> = await sendRequest({
             id:  id,
             method: "GET",
@@ -136,7 +138,7 @@ export class Customer {
     create() {
         return sendRequest({
             method: "POST",
-            path: Customer.path,
+            path: Order.path,
             body: JSON.stringify(this.toSnakeCaseObject())
         });
     }
@@ -145,7 +147,7 @@ export class Customer {
         return sendRequest({
             id: this.id,
             method: "PATCH",
-            path: Customer.path,
+            path: Order.path,
             body: JSON.stringify(this.toSnakeCaseObject())
         });
     }
@@ -154,7 +156,7 @@ export class Customer {
         return sendRequest({
             id: this.id,
             method: "DELETE",
-            path: Customer.path
+            path: Order.path
         });
     }
 

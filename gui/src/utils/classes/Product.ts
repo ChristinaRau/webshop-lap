@@ -96,13 +96,6 @@ export class Product {
         return new Product("", 0, "", [], -1);
     }
 
-    // static async loadById(id: number) {
-    //     return await this.get(id).then((response) => {
-    //         return response
-    //     })
-    // }
-
-
     static async getList(): Promise<Product[]> {
         const jsonResponse: Record<string, any> | Array<Record<string, any>> = await sendRequest({
             method: "GET",
