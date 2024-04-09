@@ -1,6 +1,11 @@
-# computer
+# webshop
  
-```
-docker pull mysql
-docker run --name some-mysql -e MYSQL_ROOT_PASSWORD=my-secret-pw -d mysql:tag
-```
+Start Python server:
+
+cd api
+python.exe -m flask --app main run 
+
+Start Vite server:
+
+cd gui
+npm run dev
