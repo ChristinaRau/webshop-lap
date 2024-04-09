@@ -4,7 +4,7 @@ from typing import Optional, List
 import datetime as dt
 from .base import Base
 from .address import Address
-from .order_product import OrderProduct
+from .product import OrderProduct
 
 
 class Order(Base):

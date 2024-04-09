@@ -1,6 +1,7 @@
 from sqlalchemy import text, func, desc
 from ..models.product import Product
-from ..models.order_product import OrderProduct
+from ..models.order import Order
+from ..models.product import OrderProduct
 from urllib import response
 from ..app import app
 from flask.views import MethodView
@@ -19,14 +20,7 @@ order by ordercount desc
 limit 5"""
     )
     statement = select(Product).from_statement(textual_query)
-    """  statement = (
-        select(Product, func.count(Product.id).label("count"))
-        .join(OrderProduct)
-        .order_by(
-            desc("count"),
-        )
-        .limit(5)
-    ) """
+
     session = Session(engine)
     rows = session.scalars(statement).all()
 
@@ -41,16 +35,21 @@ group by p.id
 order by ordercount asc
 limit 5"""
     )
+
     statement = select(Product).from_statement(textual_query)
 
-    """ statement = (
-        select(Product, func.count(Product.id).label("count"))
-        .join(OrderProduct)
-        .order_by(
-            "count",
-        )
-        .limit(5)
-    ) """
+    session = Session(engine)
+    rows = session.scalars(statement).all()
+
+    return [row.to_dict() for row in rows]
+
+
+def get_orders_last_weeks():
+    textual_query = text(
+        """select * from `order` o 
+where o.date_ordered BETWEEN (NOW() - INTERVAL 4 WEEK) AND NOW()"""
+    )
+    statement = select(Order).from_statement(textual_query)
 
     session = Session(engine)
     rows = session.scalars(statement).all()

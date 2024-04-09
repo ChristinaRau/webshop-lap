@@ -9,8 +9,7 @@ from flask import jsonify, Flask, request, make_response
 from ..models.order import Order
 from ..models.address import Address
 from ..models.customer import Customer
-from ..models.order_product import OrderProduct
-from ..models.product import Product
+from ..models.product import Product, OrderProduct
 from ..models.product_detail import ProductDetail
 
 

@@ -1,19 +1,11 @@
-from urllib import response
 from ..app import app
-from flask.views import MethodView
-from sqlalchemy import select
-from sqlalchemy.orm import Session
-from ..db import engine
-from flask import jsonify, Flask, request, make_response
+from flask import jsonify
 
-from ..models.order import Order
-from ..models.address import Address
-from ..models.customer import Customer
-from ..models.order_product import OrderProduct
-from ..models.product import Product
-from ..models.product_detail import ProductDetail
-
-from ..services.statistics import get_top_selling_products, get_worst_selling_products
+from ..services.statistics import (
+    get_top_selling_products,
+    get_worst_selling_products,
+    get_orders_last_weeks,
+)
 
 
 @app.get("/statistics")
@@ -22,5 +14,6 @@ def get_stats():
         {
             "top_products": get_top_selling_products(),
             "worst_products": get_worst_selling_products(),
+            "orders_last_weeks": get_orders_last_weeks(),
         }
     )
