@@ -33,6 +33,7 @@
         :visible="showOrderDialog"
         header="Bestellung aufgeben"
         :draggable="false"
+        :closable="false"
     >
         <div class="mb-4">
             Die mit einem Stern(<span class="text-pink-500">*</span>) markierten Felder müssen ausgefüllt werden.
@@ -49,8 +50,8 @@
                     v-model="customer.billingAddress.firstName"
                     class="flex-auto"
                     autocomplete="off"
-                    :invalid="checkInputValid && customer.billingAddress.firstName"/>
-                <small v-show="checkInputValid && customer.billingAddress.firstName">
+                    :invalid="checkInputValid && fieldIsInvalid(customer.billingAddress.firstName)"/>
+                <small v-show="checkInputValid && fieldIsInvalid(customer.billingAddress.firstName)">
                     Feld darf nicht leer sein.
                 </small>
             </div>
@@ -345,11 +346,15 @@
     </Dialog>
     <Dialog
         :visible="showBillingDialog"
-        :draggable="false">
+        :draggable="false"
+        :closable="false">
 
         <div class="text-xl font-bold text-gray-900  pb-5">Danke für Ihren Einkauf.</div>
         <div class="text-md font-bold text-gray-900  pb-5">Produkte:</div>
-        <div class="flex justify-between" v-for="orderProduct in billingInfo.order_products" :key="orderProduct.id">
+        <div
+            v-for="orderProduct in billingInfo.order_products"
+            :key="orderProduct.id"
+            class="flex justify-between">
             <span>{{ orderProduct.product.name }}</span>
             <span>{{ orderProduct.product.price }}€</span>
         </div>
@@ -361,9 +366,14 @@
             <span>Zahlungsart:</span> 
             <span>{{ orderProduct.order.paymentMethod }}€</span>
         </div> -->
-        <div class="pt-5">
+        <div class="pt-5 pb-5">
             Die Rechnung wurde an Ihre E-Mail-Adresse versendet.
         </div>
+        <Button
+            type="button"
+            label="Schließen"
+            severity="secondary"
+            @click="showBillingDialog = false"></Button>
     </Dialog>
     
 </template>
@@ -383,13 +393,16 @@ import {getBillingInformation} from '@/utils/Billing';
 const products = ref<Product[]>([]);
 const selectedItem = ref<Product>(new Product("", 0, 0, 0, ""));
 const visible = ref(false);
-const { items, size, add, createOrderProducts } = useCart();
 
-const billingAddress = new Address("", "", "", "", "");
-const deliveryAddress = new Address("", "", "", "", "");
+// the shopping cart pinia store (stores all products where the user clicked "add to cart" in "items")
+const { items, size, add, createOrderProducts, emptyArray } = useCart();
+
+const billingAddress = new Address("", "", "", "", "", "");
+let deliveryAddress = new Address("", "", "", "", "", "");
 
 const bothAddressesAreEqual = ref<boolean>(true);
 
+// toggle visibility of order dialog (where the user can fill out his address etc)
 const showOrderDialog = ref(false);
 
 const customer = ref<Customer>(new Customer(
@@ -406,26 +419,19 @@ const order = ref<Order>( new Order(
     customer.value, 
     "", // timestamp
     [], // orderProducts
-    // id
 )
 );
-const orderProducts = ref<OrderProduct[]>([]);
 
 // marks fields as invalid if they are invalid (empty)
 const checkInputValid = ref(false);
 
 function copyBillingAddressToShippingAddress() {
     if (bothAddressesAreEqual.value) {
-        deliveryAddress.value = billingAddress.value;
+        deliveryAddress = billingAddress;
     }
 }
 
 async function saveOrder() {
-    console.log(customer.value);
-    console.log(billingAddress.value);
-    console.log(deliveryAddress.value);
-    console.log(order.value);
-
     // check if all required fields are filled
     checkInputValid.value = true;
 
@@ -475,6 +481,10 @@ async function saveOrder() {
     await createOrderProducts(order.value.id);
 
     showOrderDialog.value = false;
+
+    // after creating the order, it's time to empty the shopping cart
+    emptyArray();
+
 
     await getBillingInformation(order.value.id).then((resp) => {
         return resp.json();

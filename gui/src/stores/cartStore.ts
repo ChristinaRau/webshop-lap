@@ -34,8 +34,16 @@ export const useCart = defineStore("cart", () => {
                 });
             }
         }
+    };
 
+    const emptyArray = function() {
+        const arraySize = items.value.length;
+
+        // emptying the array without reassigning to [] because i don't want to lose the reference
+        for (let i = 0; i < arraySize; i++) {
+            items.value.pop();
+        }
     }
 
-    return { items, add, size, createOrderProducts };
+    return { items, add, size, createOrderProducts, emptyArray };
 });
