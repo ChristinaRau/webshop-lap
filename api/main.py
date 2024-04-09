@@ -7,6 +7,7 @@ from .authentication import *
 from flask_cors import CORS
 from .controllers.base_controllers import *
 from .controllers.billing_controller import *
+from .controllers.statistics_controller import *
 
 # from .controllers.order_controller import *
 from .upload import *

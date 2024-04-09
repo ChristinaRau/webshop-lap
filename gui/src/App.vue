@@ -34,9 +34,10 @@ const menuItems = ref<MenuItem[]>([
         url: "/products"
     },
     {
-        label: "Login",
-        url: "/login"
-    }
+        label: "Statistiken",
+        url: "/stats"
+    }   
+
 ]);
 
 </script>

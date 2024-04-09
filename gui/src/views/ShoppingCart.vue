@@ -353,7 +353,17 @@
             <span>{{ orderProduct.product.name }}</span>
             <span>{{ orderProduct.product.price }}€</span>
         </div>
-        <div>Gesamter Betrag: {{ productPricesSum }}€</div>
+        <div class="flex justify-between border-t-2">
+            <span>Gesamter Betrag:</span> 
+            <span>{{ productPricesSum }}€</span>
+        </div>
+        <!-- <div class="flex justify-between border-t-2">
+            <span>Zahlungsart:</span> 
+            <span>{{ orderProduct.order.paymentMethod }}€</span>
+        </div> -->
+        <div class="pt-5">
+            Die Rechnung wurde an Ihre E-Mail-Adresse versendet.
+        </div>
     </Dialog>
     
 </template>
