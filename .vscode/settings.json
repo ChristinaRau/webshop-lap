@@ -1,0 +1,27 @@
+{
+	"editor.insertSpaces": true,
+    "editor.detectIndentation": false,
+    "terminal.integrated.minimumContrastRatio": 5,
+    "python.analysis.inlayHints.callArgumentNames": "all",
+    "python.analysis.inlayHints.functionReturnTypes": true,
+    "python.analysis.inlayHints.pytestParameters": true,
+    "python.analysis.inlayHints.variableTypes": true,
+    "python.analysis.autoImportCompletions": true,
+    "python.analysis.autoFormatStrings": true,
+    "python.analysis.completeFunctionParens": true,
+    "python.analysis.typeCheckingMode": "basic",
+    "python.testing.pytestEnabled": true,
+    "isort.interpreter": [
+        "/usr/bin/python3"
+    ],
+    "[python]": {
+        "files.autoSave": "onWindowChange",
+        "editor.wordWrap": "on",
+        "editor.autoSurround": "quotes",
+        "editor.bracketPairColorization.independentColorPoolPerBracketType": true,
+        "editor.defaultFormatter": "ms-python.black-formatter"
+    },
+    "files.autoSave": "onFocusChange",
+    "files.autoSaveDelay": 600,
+    "editor.formatOnSave": true
+}

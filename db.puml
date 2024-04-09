@@ -1,0 +1,67 @@
+@startuml
+
+!theme reddress-lightblue
+
+
+entity Reseller {
+*id: int <<PK>>
+--
+*name: varchar
+}
+
+entity ComputerBaseModel {
+*id: int <<PK>>
+--
+*name: varchar
+*ram_gigabyte: float 
+*price: float
+*storage_gigabyte: float
+*processor: string
+image_path: string
+description: varchar
+}
+
+entity OrderComputer {
+*id: int <<PK>>
+--
+*computer_base_model_id: int <<FK>>
+*orderId: int <<FK>>
+}
+
+entity Addition {
+  *id: int <<PK>>
+  --
+  *name: string
+  *value: string
+  *price: float
+}
+
+entity OrderComputerAddition {
+  *id: int <<PK>>
+  --
+  *order_computer_id: int <<FK>>
+  *addition_id: int <<FK>>
+}
+
+entity Order {
+*id: int <<PK>>
+--
+*reseller_id: int <<FK>>
+*datetime: OffsetDateTime
+}
+
+entity Test {
+  *id: int <<PK>>
+  --
+  *date_needed_id: datetime <<FK>>
+  date_optional: datetime
+}
+
+
+Order "1".."0..n" OrderComputer
+Order "0..n".."1" Reseller 
+ComputerBaseModel "1".."0..n" OrderComputer
+OrderComputer "1".."0..n" OrderComputerAddition
+Addition "1".."0..n" OrderComputerAddition
+
+@enduml
